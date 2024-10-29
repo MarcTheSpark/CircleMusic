@@ -14,11 +14,11 @@ rationalized_harmonic_minor = Scale(
 
 
 USE_ARC_LENGTH = False 
-NOTE_LENGTH = 0.45  # if not using arc length
+NOTE_LENGTH = 0.2  # if not using arc length
 ARC_LENGTH_PER_NOTE = 0.06 # if using arc length
 ARC_LENGTH_PER_NOTE_CURVE = Envelope([0.12, 0.06, 0.06, 0.12], [200, 100, 120], [-3, 0, 3]) 
-SCALE = rationalized_harmonic_minor
-AVOID_REPEATED_NOTES = True
+SCALE = Scale.major(61)# rationalized_harmonic_minor
+AVOID_REPEATED_NOTES = False
 
 
 def radius_to_pitch(r):
@@ -173,10 +173,11 @@ def main_melody_sonification():
 
 
 def main():
-    for i, pitch in enumerate(rationalized_harmonic_minor[-9, -4, 2, 6, 8, 10, 12, 16, 17, 18, 19, 20, 21, 22, 23, 24]):
-        if i >= len(circle_spectrum_music.spectrum):
-            continue
-        s.fork(play_sub_circle, (sc_pad, i, pitch, random.uniform(-1, 1)))
+#     for i, pitch in enumerate(rationalized_harmonic_minor[-9, -4, 2, 6, 8, 10, 12, 16, 17, 18, 19, 20, 21, 22, 23, 24]):
+#     for i, pitch in enumerate([37, 49, 58, 65, 68, 72, 75, 78, 82, 84, 85, 87, 89, 92]):
+#         if i >= len(circle_spectrum_music.spectrum):
+#             continue
+#         s.fork(play_sub_circle, (sc_pad, i, pitch, random.uniform(-1, 1)))
     main_melody_sonification()
     wait_forever()
     

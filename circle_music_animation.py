@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from typing import Callable, List
 from scamp_extensions.utilities import remap
 import numpy as np
+import os
 
 
 ORIGIN = WINDOW_DIM[0] / 2, WINDOW_DIM[1] / 2
@@ -33,7 +34,6 @@ def update(dt):
     if not music_running():
         return
     t = get_time()
-
     x, y = circle_spectrum_graphics.position_at(t, offset=ORIGIN)
 
     main_path.positions.append((x, y))
@@ -152,8 +152,10 @@ if SAVE_FRAMES:
         frame_time += 1 / FRAME_RATE
         if ARC_LENGTH_PER_NOTE_CURVE:
             ARC_LENGTH_PER_NOTE = ARC_LENGTH_PER_NOTE_CURVE.value_at(frame_time)
+        if frame_time > 300:
+            exit()
         
-    for _ in range(24000):
+    for _ in range(START_FRAME):
         increment_frame()
 
     
@@ -176,10 +178,10 @@ def on_draw():
         main_batch.draw()
         play_head_rad_mul = ENLARGEMENT_DECAY_CONSTANT + (1 - ENLARGEMENT_DECAY_CONSTANT) * play_head_rad_mul
 
-    if SAVE_FRAMES:
-        if frame > 25000:
-            pyglet.image.get_buffer_manager().get_color_buffer().save(f'frames/{frame:06}.png')
-        increment_frame()
+        if SAVE_FRAMES:
+            if os.path.exists('frames'):
+                pyglet.image.get_buffer_manager().get_color_buffer().save(f'frames/{frame:06}.png')
+            increment_frame()
 
 @window.event
 def on_key_press(symbol, modifiers):

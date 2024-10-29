@@ -12,7 +12,24 @@ ScampUtils.instrumentFromSynthDef(
 		snd = BPeakEQ.ar(snd, freq * 8, 0.1, 8);
 		snd = snd * EnvGate(0, gate, 0.1);
 		snd = snd * volume;
-		Out.ar(out * 2, snd);
+		Out.ar(out * 2, Pan2.ar(snd, pan));
+	})
+);
+)
+
+(
+ScampUtils.instrumentFromSynthDef(
+	SynthDef(\pad, {
+		arg freq = 440, volume = 0.5, gate = 1, brightness = 0.5, pan = 0, out = 0;
+		var snd;
+		snd = Saw.ar(freq * { LFNoise2.kr(20 ! 16)  * 0.2}.midiratio * [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]);
+		snd = DelayC.ar(snd, 0.01, { Rand(0, 0.01) } ! snd.size);
+		snd = Splay.ar(snd);
+		snd = LPF.ar(snd, brightness.linexp(0, 1, 100, 1000));
+		snd = BPeakEQ.ar(snd, freq * 8, 0.1, 8);
+		snd = snd * EnvGate(0, gate, 0.1);
+		snd = snd * volume;
+		Out.ar(0, Pan2.ar(snd, Rand(-1, 1)));
 	})
 );
 )
